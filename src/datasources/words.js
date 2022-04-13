@@ -5,3 +5,5 @@ export const keyboardKeys = [
     ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
     [1, 'z', 'x', 'c', 'v', 'b', 'n', 'm', -1],
 ];
+
+export const correctWord = 'Hello';
