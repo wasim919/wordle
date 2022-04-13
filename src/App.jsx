@@ -73,24 +73,20 @@ export default function App() {
         let visited = new Map();
         for (let i = 0; i < userWord.length; ++i) {
             const char = userWord[i];
+            const element = document.getElementById(`${currentRow}${i}`);
             if (_correctWord.includes(char) && !visited.get(char)) {
                 visited.set(char, true);
                 const correctIndex = _correctWord.indexOf(char);
-                const element = document.getElementById(`${currentRow}${i}`);
                 if (!isPresent) {
                     isPresent = true;
                 }
                 if (correctIndex === i) {
-                    if (!element.classList.contains('correct')) {
-                        element.classList.add('correct');
-                        element.style = 'background-color: #538d4e';
-                    }
+                    element.style = 'background-color: #538d4e';
                 } else {
-                    if (!element.classList.contains('present')) {
-                        element.style = 'background-color: #b59f3b';
-                        element.classList.add('present');
-                    }
+                    element.style = 'background-color: #b59f3b';
                 }
+            } else if (!_correctWord.includes(char) || visited.get(char)) {
+                element.style = 'background-color: #3a3a3c';
             }
         }
         setIsRightWay(isPresent);
