@@ -64,17 +64,37 @@ export default function App() {
 
     const isPartOfTheWord = () => {
         const userWord = tiles[currentRow].join('');
-        if (userWord.toLowerCase() === correctWord.toLowerCase()) {
+        const _correctWord = correctWord.toLowerCase();
+        if (userWord.toLowerCase() === _correctWord) {
             setSolved(true);
             return true;
         }
-        for (const char of userWord) {
-            if (correctWord.toLowerCase().includes(char)) {
-                return true;
+        let isPresent = false;
+        let visited = new Map();
+        for (let i = 0; i < userWord.length; ++i) {
+            const char = userWord[i];
+            if (_correctWord.includes(char) && !visited.get(char)) {
+                visited.set(char, true);
+                const correctIndex = _correctWord.indexOf(char);
+                const element = document.getElementById(`${currentRow}${i}`);
+                if (!isPresent) {
+                    isPresent = true;
+                }
+                if (correctIndex === i) {
+                    if (!element.classList.contains('correct')) {
+                        element.classList.add('correct');
+                        element.style = 'background-color: #538d4e';
+                    }
+                } else {
+                    if (!element.classList.contains('present')) {
+                        element.style = 'background-color: #b59f3b';
+                        element.classList.add('present');
+                    }
+                }
             }
         }
-        setIsRightWay(false);
-        return false;
+        setIsRightWay(isPresent);
+        return isPresent;
     };
 
     useEffect(() => {

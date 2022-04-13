@@ -29,12 +29,12 @@ $color_white: #ffffff;
     font-weight: bold;
     text-transform: uppercase;
     user-select: none;
+}
 
-    &--correct {
-        background-color: $color_correct;
-    }
+.correct {
+    background-color: $color_correct;
+}
 
-    &--present {
-        background-color: $color_present;
-    }
+.present {
+    background-color: $color_present;
 }

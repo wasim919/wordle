@@ -8,7 +8,11 @@ function Tiles({ tiles }) {
             {tiles?.map((row, rowIndex) => (
                 <div className={styles.tileRow} key={rowIndex}>
                     {row?.map((tile, tileIndex) => (
-                        <div className={styles.tile} key={tileIndex}>
+                        <div
+                            id={`${rowIndex}${tileIndex}`}
+                            className={styles.tile}
+                            key={tileIndex}
+                        >
                             {tile}
                         </div>
                     ))}
