@@ -33,3 +33,28 @@ $color_white: #ffffff;
         }
     }
 }
+
+.solved {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    padding: 20px 16px;
+    background-color: $color_white;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    animation: disappear 2s ease-in forwards;
+
+    @keyframes disappear {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+}
