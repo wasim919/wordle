@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
 import Keyboard from './components/Keyboard';
 import Tiles from './components/Tiles';
-import { correctWord } from './datasources/words';
+import { correctWord, keyboardKeys } from './datasources/words';
 
 function isCharacterALetter(char) {
     if (char === 'Enter' || char === 'Backspace' || char.length > 1) {
@@ -74,6 +74,10 @@ export default function App() {
         for (let i = 0; i < userWord.length; ++i) {
             const char = userWord[i];
             const element = document.getElementById(`${currentRow}${i}`);
+            const keyButton =
+                document.querySelectorAll('#keyboard button')[
+                    keyboardKeys.flat().indexOf(char)
+                ];
             if (_correctWord.includes(char) && !visited.get(char)) {
                 visited.set(char, true);
                 const correctIndex = _correctWord.indexOf(char);
@@ -82,11 +86,16 @@ export default function App() {
                 }
                 if (correctIndex === i) {
                     element.style = 'background-color: #538d4e';
+                    keyButton.style = 'background-color: #538d4e';
                 } else {
                     element.style = 'background-color: #b59f3b';
+                    keyButton.style = 'background-color: #b59f3b';
                 }
             } else if (!_correctWord.includes(char) || visited.get(char)) {
                 element.style = 'background-color: #3a3a3c';
+                if (!visited.get(char)) {
+                    keyButton.style = 'background-color: #3a3a3c';
+                }
             }
         }
         setIsRightWay(isPresent);
@@ -107,7 +116,6 @@ export default function App() {
 
     useEffect(() => {
         let timerId;
-        console.log(isRightWay);
         if (!isRightWay) {
             timerId = setTimeout(resetIsRightWay, 2000);
         }
@@ -121,6 +129,7 @@ export default function App() {
     if (solved) {
         return <span>Congratulations, you have solved the game.</span>;
     }
+
     return (
         <div className={styles.container}>
             <Tiles tiles={tiles} />

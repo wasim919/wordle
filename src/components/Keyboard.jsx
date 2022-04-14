@@ -19,7 +19,7 @@ function Keyboard() {
     };
     return (
         <div className={styles.gameKeyboardContainer}>
-            <div className={styles.keyboardContainer}>
+            <div className={styles.keyboardContainer} id="keyboard">
                 {keyboardKeys?.map((row, rowIndex) => (
                     <div
                         key={rowIndex}
