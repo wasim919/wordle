@@ -4,7 +4,7 @@ import styles from './Tiles.module.scss';
 
 function Tiles({ tiles }) {
     return (
-        <div className={styles.tileContainer}>
+        <div id="tileContainer" className={styles.tileContainer}>
             {tiles?.map((row, rowIndex) => (
                 <div className={styles.tileRow} key={rowIndex}>
                     {row?.map((tile, tileIndex) => (

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
+import {
+    copyResultToClipboard,
+    getCharCountMap,
+    isAlphabet,
+} from '../core/utils';
 import { correctWord, keyboardKeys } from '../datasources/words';
 
 const maxNoOfTries = 6;
 const maxWordLength = 5;
-
-function isCharacterALetter(char) {
-    if (char === 'Enter' || char === 'Backspace' || char.length > 1) {
-        return false;
-    }
-    return char.match(/[a-z]/i);
-}
 
 const useKeyPress = () => {
     const [tiles, setTiles] = useState(
@@ -21,6 +19,13 @@ const useKeyPress = () => {
     const [currentColumn, setCurrentColumn] = useState(0);
     const [solved, setSolved] = useState(false);
     const [isRightWay, setIsRightWay] = useState(true);
+    const [userSolution, setUserSolution] = useState(
+        Array.from({ length: maxNoOfTries }, () =>
+            Array.from({ length: maxWordLength }, () => -2),
+        ),
+    );
+
+    const correctWordCharCount = getCharCountMap(correctWord.toLowerCase());
 
     const handleKeyPress = (key) => {
         if (solved) {
@@ -36,7 +41,7 @@ const useKeyPress = () => {
             _key === 'Enter' &&
             currentRow < maxNoOfTries &&
             currentColumn === maxWordLength &&
-            isPartOfTheWord()
+            charIsPresentInCorrectWord()
         ) {
             setCurrentRow(currentRow + 1);
             setCurrentColumn(0);
@@ -51,7 +56,7 @@ const useKeyPress = () => {
             _tiles[currentRow][_currentColumn] = null;
 
             setCurrentColumn(_currentColumn);
-        } else if (isCharacterALetter(_key) && currentColumn < maxWordLength) {
+        } else if (isAlphabet(_key) && currentColumn < maxWordLength) {
             _tiles[currentRow][currentColumn] = _key;
             setCurrentColumn(currentColumn + 1);
         }
@@ -59,44 +64,72 @@ const useKeyPress = () => {
         setTiles(_tiles);
     };
 
-    const isPartOfTheWord = () => {
-        const userWord = tiles[currentRow].join('');
+    const colorTileAndKey = (tile, key, color) => {
+        tile.style = `background-color: ${color}`;
+        key.style = `background-color: ${color}`;
+    };
+
+    const charIsPresentInCorrectWord = () => {
+        const userWord = tiles[currentRow].join('').toLowerCase();
         const _correctWord = correctWord.toLowerCase();
-        if (userWord.toLowerCase() === _correctWord) {
-            setSolved(true);
-        }
+
         let isPresent = false;
-        let visited = new Map();
+        let currentWordCharCount = new Map();
+        for (const char of userWord) {
+            currentWordCharCount.set(char, 1);
+        }
+        const _userSolution = [...userSolution];
         for (let i = 0; i < userWord.length; ++i) {
             const char = userWord[i];
-            const element = document.getElementById(`${currentRow}${i}`);
-            const keyButton =
+            const tileEl = document.getElementById(`${currentRow}${i}`);
+            const keyButtonEl =
                 document.querySelectorAll('#keyboard button')[
                     keyboardKeys.flat().indexOf(char)
                 ];
-
-            if (_correctWord.includes(char) && !visited.get(char)) {
-                visited.set(char, true);
+            if (
+                _correctWord.includes(char) &&
+                currentWordCharCount.get(char) <= correctWordCharCount.get(char)
+            ) {
                 const correctIndex = _correctWord.indexOf(char);
                 if (!isPresent) {
                     isPresent = true;
                 }
-                if (correctIndex === i) {
-                    element.style = 'background-color: #538d4e';
-                    keyButton.style = 'background-color: #538d4e';
+                if (correctIndex === i || correctWordCharCount.get(char) > 1) {
+                    colorTileAndKey(tileEl, keyButtonEl, '#538d4e');
+                    _userSolution[currentRow][i] = 1;
                 } else {
-                    element.style = 'background-color: #b59f3b';
-                    keyButton.style = 'background-color: #b59f3b';
+                    colorTileAndKey(tileEl, keyButtonEl, '#b59f3b');
+                    _userSolution[currentRow][i] = 0;
                 }
-            } else if (!_correctWord.includes(char) || visited.get(char)) {
-                element.style = 'background-color: #3a3a3c';
-                if (!visited.get(char)) {
-                    keyButton.style = 'background-color: #3a3a3c';
-                }
+            } else if (
+                !_correctWord.includes(char) ||
+                currentWordCharCount.get(char) > correctWordCharCount.get(char)
+            ) {
+                tileEl.style = 'background-color: #3a3a3c';
+                keyButtonEl.style = 'background-color: #3a3a3c';
+                _userSolution[currentRow][i] = -1;
+            }
+            if (currentWordCharCount.has(char)) {
+                currentWordCharCount.set(
+                    char,
+                    currentWordCharCount.get(char) + 1,
+                );
+            } else {
+                currentWordCharCount.set(char, 1);
             }
         }
         setIsRightWay(isPresent);
+        setUserSolution(_userSolution);
+        if (userWord === _correctWord) {
+            setSolved(true);
+            copyResultToClipboard(_userSolution);
+        }
         return isPresent;
+    };
+
+    const resetIsRightWay = () => {
+        setIsRightWay(true);
+        setSolved(false);
     };
 
     useEffect(() => {
@@ -106,10 +139,6 @@ const useKeyPress = () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
     });
-
-    const resetIsRightWay = () => {
-        setIsRightWay(true);
-    };
 
     useEffect(() => {
         let timerId;
@@ -123,7 +152,7 @@ const useKeyPress = () => {
         };
     }, [isRightWay]);
 
-    return [tiles, solved, isRightWay];
+    return [tiles, solved, isRightWay, userSolution];
 };
 
 export default useKeyPress;
