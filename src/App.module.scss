@@ -9,6 +9,38 @@ $color_white: #ffffff;
     place-items: center;
 }
 
+.header {
+    border-bottom: 1px solid rgb(58, 58, 60);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    padding: 10px 0px;
+
+    &__title {
+        font-size: 24px;
+        font-weight: 500;
+        color: #ffffff;
+        text-align: center;
+    }
+
+    &__result {
+        font-size: 24px;
+        font-weight: 500;
+        color: #ffffff;
+        position: absolute;
+        right: 20px;
+        border-radius: 8px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: all 250ms ease-in-out;
+
+        &:hover {
+            background-color: rgba(58, 58, 60, 0.5);
+        }
+    }
+}
+
 .notInWordList {
     position: absolute;
     top: 10%;
@@ -56,5 +88,62 @@ $color_white: #ffffff;
         100% {
             opacity: 0;
         }
+    }
+}
+
+.modal {
+    position: absolute;
+    border-radius: 8px;
+    border: 5px solid #1a1a1b;
+    background-color: #121213;
+    color: #ffffff;
+    box-shadow: 0 4px 23px 0 rgba(0, 0, 0, 20%);
+    width: 50%;
+    max-height: 90%;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+
+    &__close {
+        margin-left: auto;
+        cursor: pointer;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    &__action {
+        background-color: #538d4e;
+        color: #ffffff;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        font-size: 20px;
+        padding: 15px 30px;
+    }
+
+    &__copied {
+        font-size: 12px;
     }
 }

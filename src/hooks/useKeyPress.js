@@ -18,6 +18,7 @@ const useKeyPress = () => {
     const [currentRow, setCurrentRow] = useState(0);
     const [currentColumn, setCurrentColumn] = useState(0);
     const [solved, setSolved] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [isRightWay, setIsRightWay] = useState(true);
     const [userSolution, setUserSolution] = useState(
         Array.from({ length: maxNoOfTries }, () =>
@@ -122,6 +123,7 @@ const useKeyPress = () => {
         setUserSolution(_userSolution);
         if (userWord === _correctWord) {
             setSolved(true);
+            setShowModal(true);
             copyResultToClipboard(_userSolution);
         }
         return isPresent;
@@ -152,7 +154,7 @@ const useKeyPress = () => {
         };
     }, [isRightWay]);
 
-    return [tiles, solved, isRightWay, userSolution];
+    return [tiles, solved, showModal, isRightWay, userSolution, setShowModal];
 };
 
 export default useKeyPress;
