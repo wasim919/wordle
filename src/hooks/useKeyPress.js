@@ -32,11 +32,16 @@ const useKeyPress = (correctWord) => {
         if (solved) {
             return;
         }
-        if (currentRow === maxNoOfTries && currentColumn === maxWordLength) {
+
+        let _key = key.key;
+        if (
+            currentRow === maxNoOfTries - 1 &&
+            currentColumn === maxWordLength &&
+            _key !== 'Enter'
+        ) {
             window.alert('No more tries allowed for today!');
             return;
         }
-        let _key = key.key;
         let _tiles = [...tiles];
         if (
             _key === 'Enter' &&
