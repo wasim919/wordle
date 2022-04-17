@@ -1,0 +1,40 @@
+$color_correct: #538d4e;
+$color_present: #b59f3b;
+$color_absent: #3a3a3c;
+$color_border: #565758;
+$color_white: #ffffff;
+
+.tileContainer {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+.tileRow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.tile {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    font-size: 16px;
+    border: 2px solid $color_border;
+    color: $color_white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.correct {
+    background-color: $color_correct;
+}
+
+.present {
+    background-color: $color_present;
+}
