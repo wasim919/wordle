@@ -24,6 +24,23 @@ $color_white: #ffffff;
         text-align: center;
     }
 
+    &__restart {
+        font-size: 24px;
+        font-weight: 500;
+        color: #ffffff;
+        left: 20px;
+        margin-left: auto;
+        position: absolute;
+        border-radius: 8px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: all 250ms ease-in-out;
+
+        &:hover {
+            background-color: rgba(58, 58, 60, 0.5);
+        }
+    }
+
     &__result {
         font-size: 24px;
         font-weight: 500;

@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
+import Analytics from './components/Analytics';
 import Keyboard from './components/Keyboard';
 import Tiles from './components/Tiles';
 import { wordList } from './core/constants';
 import { copyResultToClipboard } from './core/utils';
 import useKeyPress from './hooks/useKeyPress';
+import useLocalStorage from './hooks/useLocalStorage';
 
 const correctWord = wordList[Math.floor(Math.random() * wordList.length) + 0];
 export default function App() {
     const [isCopied, setIsCopied] = useState(false);
     const [tiles, solved, showModal, isRightWay, userSolution, setShowModal] =
         useKeyPress(correctWord);
+    const [lsItem] = useLocalStorage('score');
+    const [lsTries] = useLocalStorage('tries');
 
     const copyResult = () => {
         copyResultToClipboard(userSolution);
@@ -30,6 +34,12 @@ export default function App() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <h2 className={styles.header__title}>Wordle</h2>
+                <span
+                    onClick={() => window.location.reload()}
+                    className={styles.header__restart}
+                >
+                    Restart
+                </span>
                 {solved && (
                     <span
                         onClick={() => setShowModal(true)}
@@ -40,6 +50,7 @@ export default function App() {
                 )}
             </header>
             <Tiles tiles={tiles} />
+            <Analytics score={lsItem} tries={lsTries} />
             <Keyboard />
             {!isRightWay && (
                 <span className={styles.notInWordList}>Not in word list</span>

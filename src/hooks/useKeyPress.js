@@ -5,6 +5,7 @@ import {
     isAlphabet,
 } from '../core/utils';
 import { keyboardKeys } from '../datasources/words';
+import useLocalStorage from './useLocalStorage';
 
 const maxNoOfTries = 6;
 const maxWordLength = 5;
@@ -25,6 +26,8 @@ const useKeyPress = (correctWord) => {
             Array.from({ length: maxWordLength }, () => -2),
         ),
     );
+    const [lsScore, setLsScore] = useLocalStorage('score');
+    const [lsTries, setLsTries] = useLocalStorage('tries');
 
     const correctWordCharCount = getCharCountMap(correctWord.toLowerCase());
 
@@ -34,12 +37,16 @@ const useKeyPress = (correctWord) => {
         }
 
         let _key = key.key;
-        if (
-            currentRow === maxNoOfTries - 1 &&
-            currentColumn === maxWordLength &&
-            _key !== 'Enter'
-        ) {
-            window.alert('No more tries allowed for today!');
+        if (currentRow === maxNoOfTries) {
+            window.alert('No more tries allowed!');
+            if (!!lsTries && !isNaN(lsTries)) {
+                setLsTries(parseInt(lsTries) + 1);
+            } else {
+                setLsTries(1);
+            }
+            if (!lsScore || isNaN(lsScore)) {
+                setLsScore(0);
+            }
             return;
         }
         let _tiles = [...tiles];
@@ -129,6 +136,11 @@ const useKeyPress = (correctWord) => {
         if (userWord === _correctWord) {
             setSolved(true);
             setShowModal(true);
+            if (!!lsScore && !isNaN(lsScore)) {
+                setLsScore(parseInt(lsScore) + 1);
+            } else {
+                setLsScore(1);
+            }
             copyResultToClipboard(_userSolution);
         }
         return isPresent;
