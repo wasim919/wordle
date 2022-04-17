@@ -4,12 +4,12 @@ import {
     getCharCountMap,
     isAlphabet,
 } from '../core/utils';
-import { correctWord, keyboardKeys } from '../datasources/words';
+import { keyboardKeys } from '../datasources/words';
 
 const maxNoOfTries = 6;
 const maxWordLength = 5;
 
-const useKeyPress = () => {
+const useKeyPress = (correctWord) => {
     const [tiles, setTiles] = useState(
         Array.from({ length: maxNoOfTries }, () =>
             Array.from({ length: maxWordLength }, () => null),

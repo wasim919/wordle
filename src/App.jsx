@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 import Keyboard from './components/Keyboard';
 import Tiles from './components/Tiles';
+import { wordList } from './core/constants';
 import { copyResultToClipboard } from './core/utils';
 import useKeyPress from './hooks/useKeyPress';
 
+const correctWord = wordList[Math.floor(Math.random() * wordList.length) + 0];
 export default function App() {
     const [isCopied, setIsCopied] = useState(false);
     const [tiles, solved, showModal, isRightWay, userSolution, setShowModal] =
-        useKeyPress();
+        useKeyPress(correctWord);
 
     const copyResult = () => {
         copyResultToClipboard(userSolution);
