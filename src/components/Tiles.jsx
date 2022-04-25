@@ -1,4 +1,5 @@
 import React from 'react';
+import Tile from './Tile';
 
 import styles from './Tiles.module.scss';
 
@@ -8,13 +9,12 @@ function Tiles({ tiles }) {
             {tiles?.map((row, rowIndex) => (
                 <div className={styles.tileRow} key={rowIndex}>
                     {row?.map((tile, tileIndex) => (
-                        <div
-                            id={`${rowIndex}${tileIndex}`}
-                            className={styles.tile}
+                        <Tile
                             key={tileIndex}
-                        >
-                            {tile}
-                        </div>
+                            rowIndex={rowIndex}
+                            tileIndex={tileIndex}
+                            tile={tile}
+                        />
                     ))}
                 </div>
             ))}

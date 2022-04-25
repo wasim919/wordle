@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { keyboardKeys } from '../datasources/words';
+import KeyButton from './KeyButton';
 import styles from './Keyboard.module.scss';
 
 function Keyboard() {
@@ -28,18 +29,13 @@ function Keyboard() {
                             paddingLeft: rowIndex === 1 ? '22px' : '',
                         }}
                     >
-                        {row?.map((key, keyIndex) => (
-                            <button
-                                onClick={() => dispatchKeyboardEvent(key)}
+                        {row?.map((keyValue, keyIndex) => (
+                            <KeyButton
                                 key={keyIndex}
-                                className={styles.keyButton}
-                            >
-                                {key === 1
-                                    ? 'Enter'
-                                    : key === -1
-                                    ? 'Delete'
-                                    : key}
-                            </button>
+                                keyValue={keyValue}
+                                handleKeyboradEvent={dispatchKeyboardEvent}
+                                keyIndex={keyIndex}
+                            />
                         ))}
                     </div>
                 ))}

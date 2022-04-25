@@ -1,0 +1,18 @@
+$color_key_background: #818384;
+$color_white: #ffffff;
+
+.keyButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 6px 0 0;
+    height: 58px;
+    border: 0;
+    padding: 0px 20px;
+    border-radius: 4px;
+    background-color: $color_key_background;
+    color: $color_white;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+}
